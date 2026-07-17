@@ -1,6 +1,9 @@
-# Base images are pulled from ECR Public mirror of Docker Hub official images,
-# so the build works even where docker.io is unreachable.
+# Base images default to the ECR Public mirror of Docker Hub official images,
+# so the build works even where docker.io is unreachable. Override with
+# REGISTRY=docker.io/library (CI does this - Docker Hub is unmetered there).
 ARG REGISTRY=public.ecr.aws/docker/library
+
+FROM ${REGISTRY}/composer:2 AS composer_bin
 
 FROM ${REGISTRY}/php:8.5-fpm-alpine AS base
 RUN apk add --no-cache icu-libs \
@@ -14,14 +17,14 @@ WORKDIR /app
 FROM base AS dev
 RUN apk add --no-cache git unzip \
     && printf '[www]\nuser = root\ngroup = root\n' > /usr/local/etc/php-fpm.d/zz-dev-root.conf
-COPY --from=public.ecr.aws/docker/library/composer:2 /usr/bin/composer /usr/bin/composer
+COPY --from=composer_bin /usr/bin/composer /usr/bin/composer
 ENV COMPOSER_ALLOW_SUPERUSER=1
 # Dev runs as root to avoid host-mount permission friction; prod stage runs non-root.
 CMD ["php-fpm", "-R"]
 
 FROM base AS prod
 ENV APP_ENV=prod APP_DEBUG=0
-COPY --from=public.ecr.aws/docker/library/composer:2 /usr/bin/composer /usr/bin/composer
+COPY --from=composer_bin /usr/bin/composer /usr/bin/composer
 COPY app/composer.json app/composer.lock app/symfony.lock ./
 RUN COMPOSER_ALLOW_SUPERUSER=1 composer install --no-dev --no-scripts --prefer-dist --no-progress --no-interaction
 COPY app/ ./
