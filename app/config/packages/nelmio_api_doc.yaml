@@ -2,7 +2,7 @@ nelmio_api_doc:
     documentation:
         info:
             title: Developer Landing API
-            description: 'Backend for a developer landing page: contact form with validation, email notifications and AI-powered message analysis.'
+            description: 'Backend лендинга-презентации разработчика: форма обратной связи с валидацией, email-уведомлениями и AI-анализом обращений (graceful fallback на эвристику).'
             version: 1.0.0
     areas:
         path_patterns:

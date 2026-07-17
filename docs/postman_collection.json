@@ -1,0 +1,57 @@
+{
+  "info": {
+    "name": "Developer Landing API",
+    "description": "Форма обратной связи с AI-анализом: контакт, health, metrics. Переменная {{baseUrl}} по умолчанию указывает на локальный docker compose.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080" }
+  ],
+  "item": [
+    {
+      "name": "POST /api/contact — валидное обращение",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{baseUrl}}/api/contact",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Иван Петров\",\n  \"email\": \"ivan@example.com\",\n  \"phone\": \"+7 999 123-45-67\",\n  \"comment\": \"Здравствуйте! Хотим обсудить разработку backend для нашего проекта.\"\n}"
+        }
+      }
+    },
+    {
+      "name": "POST /api/contact — ошибки валидации (422)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{baseUrl}}/api/contact",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"И\",\n  \"email\": \"not-an-email\"\n}"
+        }
+      }
+    },
+    {
+      "name": "GET /api/health",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/health"
+      }
+    },
+    {
+      "name": "GET /api/metrics",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/metrics"
+      }
+    },
+    {
+      "name": "GET /api/doc.json — OpenAPI-спецификация",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/doc.json"
+      }
+    }
+  ]
+}
