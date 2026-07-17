@@ -1,0 +1,29 @@
+<h2>Новое обращение с сайта</h2>
+
+<table cellpadding="6" style="border-collapse: collapse; font-family: sans-serif;">
+    <tr>
+        <td style="color: #666;">Имя</td>
+        <td><strong>{{ submission.name }}</strong></td>
+    </tr>
+    <tr>
+        <td style="color: #666;">Email</td>
+        <td><a href="mailto:{{ submission.email }}">{{ submission.email }}</a></td>
+    </tr>
+    <tr>
+        <td style="color: #666;">Телефон</td>
+        <td>{{ submission.phone }}</td>
+    </tr>
+    <tr>
+        <td style="color: #666;">Получено</td>
+        <td>{{ submission.createdAt|date('d.m.Y H:i:s') }} UTC</td>
+    </tr>
+    <tr>
+        <td style="color: #666;">IP</td>
+        <td>{{ submission.ip }}</td>
+    </tr>
+</table>
+
+<h3>Комментарий</h3>
+<p style="white-space: pre-wrap; font-family: sans-serif;">{{ submission.comment }}</p>
+
+<p style="color: #999; font-size: 12px;">Ответьте на это письмо, чтобы написать напрямую отправителю (Reply-To настроен).</p>

@@ -21,12 +21,13 @@ final class ContactController extends AbstractController
         Request $request,
         ContactService $contactService,
     ): JsonResponse {
-        $submission = $contactService->submit($payload, $request->getClientIp() ?? 'unknown');
+        $result = $contactService->submit($payload, $request->getClientIp() ?? 'unknown');
 
         return $this->json([
-            'id' => $submission->id,
+            'id' => $result->submission->id,
             'status' => 'accepted',
-            'receivedAt' => $submission->createdAt->format(\DateTimeInterface::ATOM),
+            'emails' => $result->emailStatus->value,
+            'receivedAt' => $result->submission->createdAt->format(\DateTimeInterface::ATOM),
         ], Response::HTTP_CREATED);
     }
 }
