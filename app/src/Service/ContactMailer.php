@@ -25,10 +25,12 @@ final class ContactMailer implements ContactNotifierInterface
 
     public function sendOwnerNotification(ContactSubmission $submission): void
     {
+        // Bare addresses on purpose: HTTPS mail APIs (Resend) reject headers
+        // with encoded/folded display names; the name is in the email body.
         $email = (new TemplatedEmail())
             ->from(new Address($this->fromAddress, $this->fromName))
             ->to($this->ownerAddress)
-            ->replyTo(new Address($submission->email, $submission->name))
+            ->replyTo(new Address($submission->email))
             ->subject(\sprintf('Новое обращение с сайта — %s', $submission->name))
             ->htmlTemplate('emails/owner_notification.html.twig')
             ->context(['submission' => $submission]);
@@ -38,9 +40,11 @@ final class ContactMailer implements ContactNotifierInterface
 
     public function sendUserConfirmation(ContactSubmission $submission): void
     {
+        // Bare address on purpose: Resend's testing mode 403s any `to` with a
+        // display name (the greeting already addresses the user by name).
         $email = (new TemplatedEmail())
             ->from(new Address($this->fromAddress, $this->fromName))
-            ->to(new Address($submission->email, $submission->name))
+            ->to(new Address($submission->email))
             ->subject('Ваше обращение получено')
             ->htmlTemplate('emails/user_confirmation.html.twig')
             ->context(['submission' => $submission]);

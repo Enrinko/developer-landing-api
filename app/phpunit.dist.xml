@@ -15,6 +15,11 @@
         <ini name="error_reporting" value="-1" />
         <server name="APP_ENV" value="test" force="true" />
         <server name="SHELL_VERBOSITY" value="-1" />
+        <!-- Tests must not depend on real-delivery env from compose overrides:
+             real env vars beat .env.test, so pin them here. -->
+        <env name="MAILER_DSN" value="null://null" force="true" />
+        <env name="MAIL_OWNER" value="owner@example.com" force="true" />
+        <env name="MAIL_FROM" value="no-reply@developer-landing.local" force="true" />
     </php>
 
     <testsuites>
