@@ -1,3 +1,10 @@
 framework:
     mailer:
         dsn: '%env(MAILER_DSN)%'
+
+when@test:
+    framework:
+        mailer:
+            # Tests must never hit a real SMTP server, even when the container
+            # environment provides one (compose sets MAILER_DSN for dev).
+            dsn: 'null://null'
