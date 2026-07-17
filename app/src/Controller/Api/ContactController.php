@@ -27,6 +27,7 @@ final class ContactController extends AbstractController
             'id' => $result->submission->id,
             'status' => 'accepted',
             'emails' => $result->emailStatus->value,
+            'ai' => $result->submission->analysis?->toArray(),
             'receivedAt' => $result->submission->createdAt->format(\DateTimeInterface::ATOM),
         ], Response::HTTP_CREATED);
     }

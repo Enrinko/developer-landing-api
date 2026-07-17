@@ -17,6 +17,7 @@ final readonly class ContactSubmission
         public string $comment,
         public string $ip,
         public \DateTimeImmutable $createdAt,
+        public ?AiAnalysis $analysis = null,
     ) {
     }
 
@@ -33,8 +34,22 @@ final readonly class ContactSubmission
         );
     }
 
+    public function withAnalysis(AiAnalysis $analysis): self
+    {
+        return new self(
+            id: $this->id,
+            name: $this->name,
+            email: $this->email,
+            phone: $this->phone,
+            comment: $this->comment,
+            ip: $this->ip,
+            createdAt: $this->createdAt,
+            analysis: $analysis,
+        );
+    }
+
     /**
-     * @return array<string, string>
+     * @return array<string, mixed>
      */
     public function toArray(): array
     {
@@ -46,6 +61,7 @@ final readonly class ContactSubmission
             'comment' => $this->comment,
             'ip' => $this->ip,
             'createdAt' => $this->createdAt->format(\DateTimeInterface::ATOM),
+            'ai' => $this->analysis?->toArray(),
         ];
     }
 }
