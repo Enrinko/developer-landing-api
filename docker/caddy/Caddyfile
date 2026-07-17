@@ -6,6 +6,11 @@
 root * /app/public
 encode gzip
 
+# Serve the static landing for directory requests: php_fastcgi's built-in
+# try_files only knows index.php, so without this "/" would hit Symfony
+# routing (404). No match leaves the path untouched for the API routes.
+try_files {path} {path}/index.html
+
 php_fastcgi 127.0.0.1:9000 {
     index index.php
 }
