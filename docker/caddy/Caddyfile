@@ -1,0 +1,13 @@
+# Single-container production serving (used by the `serve` image stage,
+# e.g. on Render): Caddy serves the static landing and proxies PHP to
+# the php-fpm process running in the same container.
+:{$PORT:8080}
+
+root * /app/public
+encode gzip
+
+php_fastcgi 127.0.0.1:9000 {
+    index index.php
+}
+
+file_server
