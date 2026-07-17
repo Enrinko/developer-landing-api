@@ -26,4 +26,33 @@
 <h3>Комментарий</h3>
 <p style="white-space: pre-wrap; font-family: sans-serif;">{{ submission.comment }}</p>
 
+{% if submission.analysis %}
+    {% set sentimentLabels = {'positive': 'позитивная', 'neutral': 'нейтральная', 'negative': 'негативная'} %}
+    {% set categoryLabels = {'job_offer': 'предложение о работе', 'project_inquiry': 'запрос на проект', 'question': 'вопрос', 'spam': 'спам', 'other': 'другое'} %}
+    <h3>AI-анализ</h3>
+    <table cellpadding="6" style="border-collapse: collapse; font-family: sans-serif;">
+        <tr>
+            <td style="color: #666;">Тональность</td>
+            <td>{{ sentimentLabels[submission.analysis.sentiment.value] }}</td>
+        </tr>
+        <tr>
+            <td style="color: #666;">Категория</td>
+            <td>{{ categoryLabels[submission.analysis.category.value] }}</td>
+        </tr>
+        <tr>
+            <td style="color: #666;">Вероятность спама</td>
+            <td>{{ (submission.analysis.spamScore * 100)|round }}%</td>
+        </tr>
+        <tr>
+            <td style="color: #666;">Источник</td>
+            <td>{{ submission.analysis.source.value == 'ai' ? submission.analysis.provider : 'эвристика (AI недоступен)' }}</td>
+        </tr>
+    </table>
+
+    {% if submission.analysis.replyDraft %}
+        <h4 style="font-family: sans-serif;">Черновик ответа (сгенерирован AI)</h4>
+        <p style="white-space: pre-wrap; font-family: sans-serif; background: #f0f7ff; padding: 12px; border-radius: 6px;">{{ submission.analysis.replyDraft }}</p>
+    {% endif %}
+{% endif %}
+
 <p style="color: #999; font-size: 12px;">Ответьте на это письмо, чтобы написать напрямую отправителю (Reply-To настроен).</p>

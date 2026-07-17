@@ -9,18 +9,20 @@ use App\Model\ContactResult;
 use App\Model\ContactSubmission;
 use App\Model\EmailStatus;
 use App\Repository\ContactSubmissionRepositoryInterface;
+use App\Service\Ai\AiAnalyzerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 
 /**
- * Application layer: orchestrates what happens to a validated
- * contact request (persist -> notify -> respond).
+ * Application layer: orchestrates the full cycle of a validated contact
+ * request: analyze (AI) -> persist -> notify -> respond.
  */
 final class ContactService
 {
     public function __construct(
         private readonly ContactSubmissionRepositoryInterface $repository,
         private readonly ContactNotifierInterface $notifier,
+        private readonly AiAnalyzerInterface $aiAnalyzer,
         private readonly LoggerInterface $logger,
     ) {
     }
@@ -28,6 +30,9 @@ final class ContactService
     public function submit(ContactRequest $request, string $ip): ContactResult
     {
         $submission = ContactSubmission::fromRequest($request, $ip);
+
+        // Never throws: falls back to a heuristic analysis when AI is down.
+        $submission = $submission->withAnalysis($this->aiAnalyzer->analyze($submission));
 
         $this->repository->save($submission);
 
