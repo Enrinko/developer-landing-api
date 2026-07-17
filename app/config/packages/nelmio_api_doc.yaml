@@ -1,0 +1,9 @@
+nelmio_api_doc:
+    documentation:
+        info:
+            title: Developer Landing API
+            description: 'Backend for a developer landing page: contact form with validation, email notifications and AI-powered message analysis.'
+            version: 1.0.0
+    areas:
+        path_patterns:
+            - ^/api(?!/doc)
