@@ -5,6 +5,11 @@ on:
     branches: [main]
   pull_request:
 
+# GitHub-hosted runners pull from Docker Hub without metering, while the
+# default ECR Public mirror rate-limits anonymous pulls from shared CI IPs.
+env:
+  DOCKER_REGISTRY: docker.io/library
+
 jobs:
   quality:
     name: Lint, static analysis, tests
@@ -36,4 +41,4 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Build prod target
-        run: docker build -f docker/php/Dockerfile --target prod .
+        run: docker build -f docker/php/Dockerfile --target prod --build-arg REGISTRY=docker.io/library .
