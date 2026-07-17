@@ -48,6 +48,35 @@ final class JsonlContactSubmissionRepository implements ContactSubmissionReposit
         }
     }
 
+    public function readAll(): iterable
+    {
+        $file = $this->storageDir.\DIRECTORY_SEPARATOR.self::FILE_NAME;
+        if (!is_file($file)) {
+            return;
+        }
+
+        $handle = @fopen($file, 'rb');
+        if (false === $handle) {
+            return;
+        }
+
+        try {
+            while (false !== ($line = fgets($handle))) {
+                $line = trim($line);
+                if ('' === $line) {
+                    continue;
+                }
+
+                $record = json_decode($line, true);
+                if (\is_array($record)) {
+                    yield $record;
+                }
+            }
+        } finally {
+            fclose($handle);
+        }
+    }
+
     private function ensureStorageDir(): void
     {
         if (is_dir($this->storageDir)) {
