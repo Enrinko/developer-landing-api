@@ -1,0 +1,11 @@
+# IDE
+.idea/
+.vscode/
+
+# Local assignment / session files
+Тест.pdf
+.remember/
+
+# OS
+.DS_Store
+Thumbs.db

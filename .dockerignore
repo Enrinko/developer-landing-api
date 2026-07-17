@@ -1,0 +1,10 @@
+.git
+.idea
+.remember
+Тест.pdf
+app/vendor
+app/var
+app/.env.local
+app/.env.*.local
+docs
+README.md
