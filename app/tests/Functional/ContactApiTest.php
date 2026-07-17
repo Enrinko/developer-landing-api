@@ -37,6 +37,10 @@ final class ContactApiTest extends WebTestCase
         self::assertArrayHasKey('id', $data);
         self::assertSame('accepted', $data['status']);
         self::assertArrayHasKey('receivedAt', $data);
+        // No AI keys in the test environment -> the heuristic fallback must kick in.
+        self::assertSame('heuristic', $data['ai']['source']);
+        self::assertArrayHasKey('sentiment', $data['ai']);
+        self::assertArrayHasKey('category', $data['ai']);
     }
 
     public function testValidSubmissionIsPersistedToStorage(): void
@@ -58,6 +62,7 @@ final class ContactApiTest extends WebTestCase
         self::assertSame('Ivan Petrov', $record['name']);
         self::assertNotEmpty($record['id']);
         self::assertNotEmpty($record['createdAt']);
+        self::assertSame('heuristic', $record['ai']['source']);
     }
 
     public function testMissingRequiredFieldsReturn422WithErrorEnvelope(): void
