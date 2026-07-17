@@ -41,6 +41,7 @@ final class ContactEmailTest extends WebTestCase
         self::assertEmailAddressContains($ownerEmail, 'Reply-To', 'anna@example.com');
         self::assertEmailHtmlBodyContains($ownerEmail, 'Please contact me about a Symfony backend project.');
         self::assertEmailHtmlBodyContains($ownerEmail, 'Anna Smirnova');
+        self::assertEmailHtmlBodyContains($ownerEmail, 'AI-анализ');
 
         $userEmail = self::getMailerMessage(1);
         self::assertNotNull($userEmail);
