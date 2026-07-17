@@ -7,6 +7,9 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
+    # File storage lives under var/, separated per environment so tests never
+    # touch dev data.
+    app.storage_dir: '%kernel.project_dir%/var/storage/%kernel.environment%'
 
 services:
     # default configuration for services in *this* file
