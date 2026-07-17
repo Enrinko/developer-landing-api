@@ -1,6 +1,15 @@
 monolog:
     channels:
         - deprecation # Deprecations are logged in the dedicated "deprecation" channel when it exists
+        - requests # Access log: one JSON line per finished HTTP request
+    handlers:
+        # ТЗ requirement: every request is logged to a file (all environments).
+        requests:
+            type: stream
+            path: "%kernel.logs_dir%/requests.log"
+            level: info
+            channels: [requests]
+            formatter: monolog.formatter.json
 
 when@dev:
     monolog:
@@ -9,7 +18,7 @@ when@dev:
                 type: stream
                 path: "%kernel.logs_dir%/%kernel.environment%.log"
                 level: debug
-                channels: ["!event"]
+                channels: ["!event", "!requests"]
             console:
                 type: console
                 process_psr_3_messages: false
@@ -41,8 +50,13 @@ when@prod:
                 buffer_size: 50 # How many messages should be saved? Prevent memory leaks
             nested:
                 type: stream
-                path: php://stderr
+                path: "%kernel.logs_dir%/app.log"
                 level: debug
+                formatter: monolog.formatter.json
+            stderr_errors:
+                type: stream
+                path: php://stderr
+                level: error
                 formatter: monolog.formatter.json
             console:
                 type: console
