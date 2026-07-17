@@ -15,5 +15,8 @@ framework:
         #app: cache.adapter.apcu
 
         # Namespaced pools use the above "app" backend by default
-        #pools:
-            #my.dedicated.cache: null
+        pools:
+            # File-backed storage for the contact-form rate limiter (the spec
+            # explicitly allows file caching for rate limiting data).
+            rate_limiter.cache:
+                adapter: cache.adapter.filesystem
