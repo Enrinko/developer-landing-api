@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Максим — Backend-разработчик · PHP / Symfony</title>
+    <meta name="description" content="Лендинг-презентация backend-разработчика: PHP, Symfony, Docker, интеграции с AI. Форма обратной связи работает на собственном API.">
+    <link rel="stylesheet" href="/assets/landing.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>⚙️</text></svg>">
+</head>
+<body>
+
+<header class="topbar">
+    <div class="container topbar__inner">
+        <span class="topbar__logo">~/maxim<span class="cursor" aria-hidden="true">▊</span></span>
+        <nav class="topbar__nav" aria-label="Разделы">
+            <a href="#skills">/skills</a>
+            <a href="#experience">/experience</a>
+            <a href="#contact">/contact</a>
+            <a href="/api/doc" target="_blank" rel="noopener">/api/doc</a>
+        </nav>
+    </div>
+</header>
+
+<main>
+    <!-- ЗАМЕНИТЕ данные (имя, описание, ссылки) на свои -->
+    <section class="hero">
+        <div class="container hero__grid">
+            <div class="hero__intro">
+                <p class="eyebrow">backend-разработчик · php / symfony</p>
+                <h1>Максим</h1>
+                <p class="hero__lead">
+                    Проектирую и собираю надёжные backend-сервисы: REST API,
+                    интеграции с внешними системами и AI-провайдерами,
+                    Docker-окружения и чистая слоистая архитектура.
+                </p>
+                <div class="hero__actions">
+                    <a class="btn btn--primary" href="#contact">Написать мне</a>
+                    <a class="btn btn--ghost" href="/api/doc" target="_blank" rel="noopener">Документация API</a>
+                </div>
+            </div>
+
+            <div class="terminal" aria-label="Живой статус сервиса">
+                <div class="terminal__bar">
+                    <span class="terminal__dot"></span><span class="terminal__dot"></span><span class="terminal__dot"></span>
+                    <span class="terminal__title">status — live</span>
+                </div>
+                <pre class="terminal__body"><span class="t-muted">$</span> curl https://this-site/api/health
+<code id="health-output" class="t-json">// проверяю состояние сервиса…</code></pre>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills" class="section">
+        <div class="container">
+            <h2 class="endpoint"><span class="endpoint__method">GET</span> /skills</h2>
+            <div class="skills">
+                <article class="skill-card">
+                    <h3>Backend</h3>
+                    <ul>
+                        <li>PHP 8.x</li><li>Symfony</li><li>Yii2</li><li>REST API</li><li>PHPUnit</li>
+                    </ul>
+                </article>
+                <article class="skill-card">
+                    <h3>Данные</h3>
+                    <ul>
+                        <li>PostgreSQL</li><li>MySQL</li><li>Redis</li><li>Doctrine</li>
+                    </ul>
+                </article>
+                <article class="skill-card">
+                    <h3>Инфраструктура</h3>
+                    <ul>
+                        <li>Docker</li><li>nginx</li><li>CI/CD</li><li>Git</li><li>Linux</li>
+                    </ul>
+                </article>
+                <article class="skill-card">
+                    <h3>AI-интеграции</h3>
+                    <ul>
+                        <li>OpenAI / Anthropic API</li><li>Gemini</li><li>Локальные LLM (Ollama)</li><li>Fallback-стратегии</li>
+                    </ul>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="experience" class="section">
+        <div class="container">
+            <h2 class="endpoint"><span class="endpoint__method">GET</span> /experience</h2>
+            <ol class="timeline">
+                <li>
+                    <span class="timeline__period">сейчас</span>
+                    <div>
+                        <h3>Backend-разработка на PHP</h3>
+                        <p>Коммерческие проекты на Symfony и Yii2: API, интеграции, оптимизация запросов, поддержка и развитие legacy-систем.</p>
+                    </div>
+                </li>
+                <li>
+                    <span class="timeline__period">пет-проекты</span>
+                    <div>
+                        <h3>Сервисы с AI-интеграциями</h3>
+                        <p>Этот сайт — рабочий пример: форма ниже отправляет запрос в мой API, который анализирует сообщение LLM-моделью и шлёт уведомления на почту.</p>
+                    </div>
+                </li>
+            </ol>
+        </div>
+    </section>
+
+    <section id="contact" class="section section--contact">
+        <div class="container">
+            <h2 class="endpoint"><span class="endpoint__method endpoint__method--post">POST</span> /contact</h2>
+            <p class="section__note">Форма отправляет настоящий запрос в API этого сайта — ответ появится справа.</p>
+
+            <div class="contact__grid">
+                <form id="contact-form" class="form" novalidate>
+                    <div class="form__field">
+                        <label for="f-name">Имя</label>
+                        <input id="f-name" name="name" type="text" autocomplete="name" required minlength="2" maxlength="100" placeholder="Как к вам обращаться">
+                        <p class="form__error" data-error-for="name"></p>
+                    </div>
+                    <div class="form__field">
+                        <label for="f-email">Email</label>
+                        <input id="f-email" name="email" type="email" autocomplete="email" required placeholder="you@example.com">
+                        <p class="form__error" data-error-for="email"></p>
+                    </div>
+                    <div class="form__field">
+                        <label for="f-phone">Телефон</label>
+                        <input id="f-phone" name="phone" type="tel" autocomplete="tel" required placeholder="+7 900 000-00-00">
+                        <p class="form__error" data-error-for="phone"></p>
+                    </div>
+                    <div class="form__field">
+                        <label for="f-comment">Комментарий</label>
+                        <textarea id="f-comment" name="comment" rows="5" required minlength="5" maxlength="5000" placeholder="Опишите задачу или предложение"></textarea>
+                        <p class="form__error" data-error-for="comment"></p>
+                    </div>
+                    <button class="btn btn--primary" type="submit" id="submit-btn">Отправить запрос</button>
+                    <p class="form__status" id="form-status" role="status"></p>
+                </form>
+
+                <div class="terminal terminal--response">
+                    <div class="terminal__bar">
+                        <span class="terminal__dot"></span><span class="terminal__dot"></span><span class="terminal__dot"></span>
+                        <span class="terminal__title">response</span>
+                    </div>
+                    <pre class="terminal__body"><code id="response-status" class="t-status">// здесь появится ответ API после отправки</code>
+<code id="response-output" class="t-json"></code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer class="footer">
+    <div class="container footer__inner">
+        <span>Собрано на Symfony + Docker · AI-анализ обращений · <a href="/api/doc" target="_blank" rel="noopener">OpenAPI</a></span>
+        <span><a href="https://github.com/Enrinko/developer-landing-api" target="_blank" rel="noopener">Исходный код на GitHub</a></span>
+    </div>
+</footer>
+
+<script src="/assets/landing.js" defer></script>
+</body>
+</html>
