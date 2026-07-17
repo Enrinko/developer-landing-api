@@ -4,6 +4,8 @@ services:
       context: .
       dockerfile: docker/php/Dockerfile
       target: dev
+      args:
+        REGISTRY: ${DOCKER_REGISTRY:-public.ecr.aws/docker/library}
     volumes:
       - ./app:/app
       # var/ (cache, logs, file storage) lives in a named volume: faster on
@@ -20,7 +22,7 @@ services:
       retries: 5
 
   nginx:
-    image: public.ecr.aws/docker/library/nginx:1.28-alpine
+    image: ${DOCKER_REGISTRY:-public.ecr.aws/docker/library}/nginx:1.28-alpine
     ports:
       - "8080:80"
     volumes:
