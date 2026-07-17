@@ -17,4 +17,11 @@ interface ContactSubmissionRepositoryInterface
      * @throws StorageUnavailableException
      */
     public function save(ContactSubmission $submission): void;
+
+    /**
+     * Streams every stored submission as a raw record (for metrics).
+     *
+     * @return iterable<array<string, mixed>>
+     */
+    public function readAll(): iterable;
 }

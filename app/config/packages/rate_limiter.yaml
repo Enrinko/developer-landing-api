@@ -1,0 +1,8 @@
+framework:
+    rate_limiter:
+        # Sliding window per client IP for POST /api/contact (spam protection).
+        contact_form:
+            policy: 'sliding_window'
+            limit: '%env(int:RATE_LIMIT_CONTACT_LIMIT)%'
+            interval: '%env(RATE_LIMIT_CONTACT_INTERVAL)%'
+            cache_pool: 'rate_limiter.cache'
