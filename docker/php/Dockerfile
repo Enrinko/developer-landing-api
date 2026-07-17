@@ -31,3 +31,16 @@ RUN COMPOSER_ALLOW_SUPERUSER=1 composer dump-autoload --optimize --classmap-auth
     && chown -R app:app /app/var
 USER app
 CMD ["php-fpm"]
+
+# Single-container deploy target (Render/Railway/any Docker host): Caddy serves
+# HTTP on $PORT and proxies to php-fpm inside the same container. This is the
+# LAST stage on purpose - a plain `docker build .` (what Render runs) picks it.
+FROM prod AS serve
+USER root
+RUN apk add --no-cache caddy \
+    && printf '#!/bin/sh\nset -e\nphp-fpm -D\nexec caddy run --config /etc/caddy/Caddyfile\n' > /usr/local/bin/serve \
+    && chmod +x /usr/local/bin/serve
+COPY docker/caddy/Caddyfile /etc/caddy/Caddyfile
+USER app
+EXPOSE 8080
+CMD ["serve"]
