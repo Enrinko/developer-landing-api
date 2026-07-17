@@ -209,7 +209,7 @@ Twig с автоэкранированием, JSON-ответы экраниру
 
 | Провайдер | Ключ | Стоимость | env |
 |---|---|---|---|
-| **Google Gemini** | [aistudio.google.com/apikey](https://aistudio.google.com/apikey) — 1 минута, без карты | бесплатный tier | `GEMINI_API_KEY`, `GEMINI_MODEL=gemini-2.5-flash` |
+| **Google Gemini** | [aistudio.google.com/apikey](https://aistudio.google.com/apikey) — 1 минута, без карты | бесплатный tier | `GEMINI_API_KEY`, `GEMINI_MODEL=gemini-flash-latest` |
 | **Groq** (Llama) | [console.groq.com/keys](https://console.groq.com/keys) | бесплатный tier | `GROQ_API_KEY`, `GROQ_MODEL=llama-3.3-70b-versatile` |
 | **OpenAI** | [platform.openai.com](https://platform.openai.com/api-keys) | платный | `OPENAI_API_KEY`, `OPENAI_MODEL=gpt-4o-mini` |
 | **Anthropic Claude** | [console.anthropic.com](https://console.anthropic.com/) | платный | `ANTHROPIC_API_KEY`, `ANTHROPIC_MODEL=claude-opus-4-8` |
