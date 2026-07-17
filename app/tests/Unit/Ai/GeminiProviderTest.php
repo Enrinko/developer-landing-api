@@ -46,6 +46,31 @@ final class GeminiProviderTest extends TestCase
         self::assertSame('gemini', $analysis->provider);
     }
 
+    public function testSkipsThoughtPartsFromThinkingModels(): void
+    {
+        $body = json_encode([
+            'candidates' => [[
+                'content' => ['parts' => [
+                    ['text' => 'Let me reason about this message...', 'thought' => true],
+                    ['text' => '{"sentiment":"positive","category":"question","spam_score":0.1}',
+                        'thoughtSignature' => 'abc'],
+                ]],
+            ]],
+        ], \JSON_THROW_ON_ERROR);
+
+        $provider = new GeminiProvider(
+            new MockHttpClient(new MockResponse($body)),
+            new AiResponseParser(),
+            'secret-key',
+            'gemini-test',
+            5,
+        );
+
+        $analysis = $provider->analyze($this->submission());
+
+        self::assertSame(Sentiment::Positive, $analysis->sentiment);
+    }
+
     public function testHttpErrorIsWrappedIntoProviderException(): void
     {
         $client = new MockHttpClient(new MockResponse('upstream broken', ['http_code' => 500]));

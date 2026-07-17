@@ -68,11 +68,38 @@ final class GeminiProvider implements AiProviderInterface
             throw new AiProviderException('Gemini request failed: '.$exception->getMessage(), previous: $exception);
         }
 
-        $text = $data['candidates'][0]['content']['parts'][0]['text'] ?? null;
-        if (!\is_string($text) || '' === $text) {
+        $text = $this->extractAnswerText($data);
+        if (null === $text) {
             throw new AiProviderException('Gemini returned an empty analysis.');
         }
 
         return $this->parser->parse($text, $this->name());
+    }
+
+    /**
+     * Thinking models may prepend reasoning parts (flagged "thought": true)
+     * before the actual answer — take the first non-thought text part.
+     *
+     * @param array<string, mixed> $data
+     */
+    private function extractAnswerText(array $data): ?string
+    {
+        $parts = $data['candidates'][0]['content']['parts'] ?? [];
+        if (!\is_array($parts)) {
+            return null;
+        }
+
+        foreach ($parts as $part) {
+            if (!\is_array($part) || ($part['thought'] ?? false)) {
+                continue;
+            }
+
+            $text = $part['text'] ?? null;
+            if (\is_string($text) && '' !== $text) {
+                return $text;
+            }
+        }
+
+        return null;
     }
 }
